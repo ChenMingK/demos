@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    #app {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: #ccc;
+    }
+    .progress-wrapper {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    /* 横线 */
+    /* background: linear-gradient(direction, color-stop1, color-stop2, ...) */
+    .progress {
+      -webkit-appearance: none; /*默认进度条效果删掉*/
+      width: 100%;
+      height: 2px;
+      margin: 0 10px;
+      background: -webkit-linear-gradient(#999, #999) no-repeat, #ddd; /* 渐变的颜色被当成覆盖的图片? */
+      background-size: 0 100%;
+    }
+    .progress:focus {
+      outline: none;
+    }
+    /* 滑块样式 */
+    .progress::-webkit-slider-thumb {
+      -webkit-appearance: none; /*默认滑块样式删掉*/
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 4px 4px 0 rgba(0, 0, 0, .15);
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="progress-wrapper">
+      <input type="range" 
+             ref="progress"
+             class="progress"
+             max="100"
+             min="0"
+             step="1"
+             @change="onProgressChange($event.target.value)" @input="onProgressInput($event.target.value)"
+             :value="progress"><!--$event原生事件对象-->
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</body>
+</html>
+
+<script>
+  let App = new Vue({
+    el: '#app',
+    data: {
+      progress: 0
+    },
+    methods: {
+      // 拖动完成时触发
+      onProgressChange(progress) {
+        // console.log(progress)
+        this.$refs.progress.style.backgoundSize = `${this.progress}% 100%`
+      },
+      // 拖动时触发
+      onProgressInput(progress) {
+        // console.log(progress)
+        this.progress = progress
+      }
+    },
+    updated() {
+      this.$refs.progress.style.backgroundSize = `${this.progress}% 100%`
+    }
+  })
+</script>
